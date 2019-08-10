@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/master-layout}">
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/supplier/supplier.css}"/>
+    <title>MidWesTen Bank - suppliers</title>
+</head>
+<body>
+    <th:block layout:fragment="content">
+        <div>
+            <span style="font-size: 1.5em">List of All Registered suppliers</span>
+            <span style="float:right;">
+                    <a class="btn btn-outline-primary btn-lg" href="/producting/supplier/new">Register a New supplier</a>
+                </span>
+        </div>
+        <p>&nbsp;</p>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Supplier Number</th>
+                <th scope="col">Name</th>
+                <th scope="col">Contact Phone Number</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Alternative non-obstrusive js solution for <tr onclick>:
+                HTML markup: <tr data-href="some-url">
+                JS function using JQuery: $('tr[data-href]').on("click", function() {
+                                            document.location = $(this).data('href');
+                                        });
+             -->
+            <!--<tr class="datarow" th:each="product,iterStat : ${products}" th:onclick="@{document.location='/prodmgmt/products/edit/{productId}'(productId=${product.productId})}">-->
+            <tr class="datarow" th:each="supplier,iterStat : ${suppliers}" th:onclick="@{document.location='#'}">
+                <th scope="row" th:text="${iterStat.count}+'.'"></th>
+                <td th:text="${supplier.supplierNumber}"></td>
+                <td th:text="${supplier.name}"></td>
+                <td th:text="${supplier.contactPhoneNumber}"></td>
+
+            </tr>
+            </tbody>
+        </table>
+
+        <hr/>
+        <!-- Pagination -->
+        <div>
+            <ul class="pagination">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Pages: </a>
+                </li>
+                <li th:each="i : ${#numbers.sequence(1, suppliers.totalPages)}"
+                    th:class="${currentPageNo}==${i-1}?'page-item active':'page-item'">
+                    <a th:href="@{/producting/supplier/list(pageno=${i-1})}"
+                       th:text="${i}" class = "page-link"></a>
+                </li>
+            </ul>
+        </div>
+    <!--
+        <ul class="nav nav-pills"><span class="disabled">Pages:&nbsp;</span>
+            <li class="nav-item" th:each="i : ${#numbers.sequence(1, suppliers.totalPages)}">
+                <a th:href="@{/midwestenbank/secure/suppliers/list(pageno=${i-1})}"
+                   th:text="${i}" th:classappend="${currentPageNo}==${i-1}?'nav-link active':'nav-link'"></a>
+            </li>
+        </ul> -->
+    </th:block>
+
+    <th:block layout:fragment="footer"></th:block>
+
+</body>
+</html>
